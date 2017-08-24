@@ -1,0 +1,76 @@
+version: '2'
+
+services:
+  rs0-0:
+    hostname: rs0-0
+    build:
+      context: .
+      dockerfile: Dockerfile-mongo
+    command: bash -c 'mongod --port 27027 --replSet rs0 --smallfiles --oplogSize 128 --auth --keyFile /opt/mongodb-keyfile & /usr/scripts/create-replica-set.sh'
+    expose:
+      - "27027"
+    volumes:
+      - ./scripts:/usr/scripts
+
+  rs0-1:
+    hostname: rs0-1
+    build:
+      context: .
+      dockerfile: Dockerfile-mongo
+    command: mongod --port 27028 --replSet rs0 --smallfiles --oplogSize 128 --auth --keyFile /opt/mongodb-keyfile
+    expose:
+      - "27028"
+    volumes:
+      - ./scripts:/usr/scripts
+
+  rs0-2:
+    hostname: rs0-2
+    build:
+      context: .
+      dockerfile: Dockerfile-mongo
+    command: mongod --port 27029 --replSet rs0 --smallfiles --oplogSize 128 --auth --keyFile /opt/mongodb-keyfile
+    expose:
+      - "27029"
+    volumes:
+      - ./scripts:/usr/scripts
+
+  toxiproxy:
+    hostname: toxiproxy
+    domainname: toxiproxy
+    image: shopify/toxiproxy
+    links:
+      - rs0-0:rs0-0
+      - rs0-1:rs0-1
+      - rs0-2:rs0-2
+    ports:
+      - "8474:8474"
+      - "27017:27017"
+      - "27018:27018"
+      - "27019:27019"
+
+  ## CONFIG
+
+  toxiproxy-configurer:
+    links:
+      - toxiproxy
+    build:
+      context: .
+      dockerfile: Dockerfile-toxiproxy-configurer
+    depends_on:
+      - toxiproxy
+
+#  mongo-configurer:
+#    links:
+#      - rs0-0
+#      - rs0-1
+#      - rs0-2
+#    build:
+#      context: .
+#      dockerfile: Dockerfile-mongo-configurer
+#    depends_on:
+#      - rs0-0
+#      - rs0-1
+#      - rs0-2
+#      - toxiproxy-configurer
+#    volumes:
+#      - ./scripts:/usr/scripts

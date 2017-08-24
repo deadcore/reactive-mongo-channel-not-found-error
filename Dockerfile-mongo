@@ -1,0 +1,8 @@
+FROM mongo:3.2
+
+RUN apt-get update -qq
+
+COPY scripts/mongodb-keyfile /opt/mongodb-keyfile
+
+RUN chmod 0600 /opt/mongodb-keyfile
+RUN chown mongodb:mongodb /opt/mongodb-keyfile

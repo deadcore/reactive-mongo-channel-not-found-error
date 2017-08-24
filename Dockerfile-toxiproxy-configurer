@@ -1,0 +1,9 @@
+FROM alpine:3.2
+
+RUN apk update
+RUN apk upgrade
+RUN apk add curl bash
+
+CMD curl -s -XPOST -d '{"name" : "rs0-1", "listen" : "toxiproxy:27018", "upstream" : "rs0-1:27028"}' http://toxiproxy:8474/proxies && \
+    curl -s -XPOST -d '{"name" : "rs0-0", "listen" : "toxiproxy:27017", "upstream" : "rs0-0:27027"}' http://toxiproxy:8474/proxies && \
+    curl -s -XPOST -d '{"name" : "rs0-2", "listen" : "toxiproxy:27019", "upstream" : "rs0-2:27029"}' http://toxiproxy:8474/proxies
