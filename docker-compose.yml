@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-mongo
-    command: bash -c 'mongod --port 27027 --replSet rs0 --smallfiles --oplogSize 128 --auth --keyFile /opt/mongodb-keyfile & /usr/scripts/create-replica-set.sh'
+    command: mongod --port 27027 --replSet rs0 --smallfiles --oplogSize 128 --auth --keyFile /opt/mongodb-keyfile
     expose:
       - "27027"
     volumes:
@@ -58,19 +58,3 @@ services:
       dockerfile: Dockerfile-toxiproxy-configurer
     depends_on:
       - toxiproxy
-
-#  mongo-configurer:
-#    links:
-#      - rs0-0
-#      - rs0-1
-#      - rs0-2
-#    build:
-#      context: .
-#      dockerfile: Dockerfile-mongo-configurer
-#    depends_on:
-#      - rs0-0
-#      - rs0-1
-#      - rs0-2
-#      - toxiproxy-configurer
-#    volumes:
-#      - ./scripts:/usr/scripts
