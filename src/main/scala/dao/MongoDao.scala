@@ -3,7 +3,6 @@ package dao
 import mongo.ReactiveMongoApi
 import reactivemongo.api.DefaultDB
 import reactivemongo.api.collections.bson.BSONCollection
-import reactivemongo.core.commands.IsMaster
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal

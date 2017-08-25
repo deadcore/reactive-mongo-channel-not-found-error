@@ -2,6 +2,7 @@ version: '2'
 
 services:
   rs0-0:
+    container_name: reactivemongoissue_rs0-00
     hostname: rs0-0
     build:
       context: .
@@ -13,6 +14,7 @@ services:
       - ./scripts:/usr/scripts
 
   rs0-1:
+    container_name: reactivemongoissue_rs0-01
     hostname: rs0-1
     build:
       context: .
@@ -24,6 +26,7 @@ services:
       - ./scripts:/usr/scripts
 
   rs0-2:
+    container_name: reactivemongoissue_rs0-02
     hostname: rs0-2
     build:
       context: .
