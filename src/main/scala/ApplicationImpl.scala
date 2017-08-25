@@ -25,6 +25,9 @@ class ApplicationImpl @Inject()(dao: UserDao, toxiproxy: ToxiproxyClient)(implic
     }
 
     1 to 20 foreach { x =>
+
+      logger.info(s"Run number $x")
+
       test(Random.shuffle(nodes).take(1): _*)
     }
 
