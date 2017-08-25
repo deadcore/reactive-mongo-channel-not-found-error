@@ -1,0 +1,1 @@
+case class DbOperationFailedException(err: String, ex: Throwable) extends RuntimeException(err, ex)
